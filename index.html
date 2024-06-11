@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang Chủ - Academy</title>
+    <!-- <link rel="stylesheet" href="./assets/css/main.css" /> -->
+    <!-- <link rel="stylesheet" href="./assets/fontawesome/css/all.min.css" /> -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+      integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+      crossorigin="anonymous"
+    />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        font-family: system-ui, sans-serif;
+        background-color: #f4f4f5;
+      }
+
+      body > div {
+        margin: auto;
+      }
+
+      /* ======= Buttons ======== */
+
+      /* Block */
+      .btn {
+        display: inline-block;
+        text-decoration: none;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        color: #fff;
+        padding: 12px 48px;
+        border-radius: 50px;
+        cursor: pointer;
+        min-width: 120px;
+        transition: opacity 0.2s ease;
+        user-select: none;
+      }
+
+      /* Modifier */
+      .btn--size-l {
+        padding: 16px 56px;
+      }
+
+      .btn--size-s {
+        padding: 8px 32px;
+      }
+
+      .btn:hover {
+        opacity: 0.8;
+      }
+
+      .btn + .btn {
+        margin-left: 16px;
+      }
+
+      .btn--success {
+        background-color: #71be34;
+      }
+
+      .btn--warn {
+        background-color: #ffb702;
+      }
+
+      .btn--danger {
+        background-color: #ff623d;
+      }
+
+      .btn--disabled {
+        opacity: 0.5 !important;
+        cursor: default;
+      }
+
+      /* ======= Toast message ======== */
+
+      #box-toast {
+        position: fixed;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        pointer-events: none;
+        z-index: 999999;
+      }
+
+      .toast {
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        padding: 12px;
+        /* min-width: 210px; */
+        max-width: 280px;
+        border-radius: 10px;
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.08);
+        transition: all linear 0.3s;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-100%);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(-100%);
+        }
+      }
+
+      @keyframes fadeOut {
+        to {
+          opacity: 0;
+        }
+      }
+
+      .toast--success .toast-icon {
+        color: #47d864;
+      }
+
+      .toast--info .toast-icon {
+        color: #2f86eb;
+      }
+
+      .toast--warning .toast-icon {
+        color: #ffc021;
+      }
+
+      .toast--error .toast-icon {
+        color: #ff623d;
+      }
+
+      .toast-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 5px;
+      }
+
+      .toast-icon .svg-icon {
+        display: inline-block;
+        width: 21px;
+        height: 21px;
+      }
+
+      .toast-body {
+        flex-grow: 1;
+      }
+
+      .toast-msg {
+        font-size: 15px;
+        color: #333;
+        line-height: 1.7;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box-toast"></div>
+
+    <div>
+      <div onclick="showSuccessToast();" class="btn btn--success">
+        Show success toast
+      </div>
+      <div onclick="showErrorToast();" class="btn btn--danger">
+        Show error toast
+      </div>
+    </div>
+    <div>
+      <svg class="size-6">
+        <use href="#check-circle"></use>
+      </svg>
+    </div>
+
+    <script>
+      function toast({ message = '', type = 'info', duration = 300000 }) {
+        const main = document.getElementById('box-toast');
+        if (main) {
+          main.innerHTML = '';
+          const toast = document.createElement('div');
+
+          setTimeout(() => main.removeChild(box), duration + 300);
+
+          const icons = {
+            success: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+                      </svg>`,
+            info: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                     <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
+                   </svg>`,
+            warning: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
+                      </svg>`,
+            error: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                      <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+                    </svg>`,
+          };
+          const delay = (duration / 1000).toFixed(2);
+          toast.classList.add('toast', `toast--${type}`);
+          toast.style.animation = `slideDown ease .3s, slideUp ease .3s ${delay}s forwards`;
+          toast.innerHTML = `<div class="toast-icon"><span class='svg-icon'>${icons[type]}</span></div>
+                             <div class="toast-body"><p class="toast-msg">${message}</p></div>`;
+          main.appendChild(toast);
+        }
+      }
+
+      function showSuccessToast() {
+        toast({
+          message: 'Bạn đã đăng ký thành công.',
+          type: 'success',
+        });
+      }
+      function showErrorToast() {
+        toast({
+          message: 'Có lỗi xảy ra, vui lòng liên hệ quản trị viên.',
+          type: 'error',
+        });
+      }
+    </script>
+  </body>
+</html>
